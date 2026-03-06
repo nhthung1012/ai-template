@@ -1,70 +1,136 @@
-# AI Chat Application
+# AI Chat Template
 
-Full-stack AI chat app with conversation history, file uploads, and authentication.
+A fullstack AI chat application built with:
 
-Tech Stack
-- Frontend: React + Vite
-- Backend: Node.js + Express
-- Database: MongoDB
-- AI: Google Gemini
-- Auth: JWT
+- **Frontend:** React (Vite)
+- **Backend:** Node.js + Express
+- **Database:** MongoDB
+- **AI Model:** Gemini
 
-1. Environment Setup
-Create two .env files.
+---
 
-Client ─ client/.env
+# 1. Environment Setup
+
+You need to create **two `.env` files**: one for the **client** and one for the **server**.
+
+---
+
+## Client `.env`
+
+Create a file:
+
+```
+client/.env
+```
+
+Add the following:
+
+```env
 VITE_API_URL=http://localhost:5000/api
+```
 
-Server ─ server/.env
-MONGO_URI=your_mongodb_connection_string
-GEMINI_API_KEY=your_gemini_api_key
-JWT_SECRET=your_random_jwt_secret_key
+This variable defines the base URL used by the frontend to call the backend API.
+
+---
+
+## Server `.env`
+
+Create a file:
+
+```
+server/.env
+```
+
+Add the following:
+
+```env
+MONGO_URI="your_mongodb_connection_string"
+GEMINI_API_KEY="your_gemini_api_key"
+JWT_SECRET="your_jwt_secret_key"
 PORT=5000
-USE_FAKE_AI=false
+USE_FAKE_AI="false"
+```
 
-Environment Variables
-Name            Description                                   Required?
-MONGO_URI       MongoDB connection string                     Yes
-GEMINI_API_KEY  Google Gemini API key                         Yes (unless USE_FAKE_AI=true)
-JWT_SECRET      Secret for signing JWT tokens                 Yes
-PORT            Server port                                   No (default 5000)
-USE_FAKE_AI     Use fake/mock AI responses for testing        No
+### Explanation
 
-2. Install Dependencies
+| Variable | Description |
+|--------|-------------|
+| MONGO_URI | MongoDB connection string |
+| GEMINI_API_KEY | API key for Gemini AI |
+| JWT_SECRET | Secret key used to sign JWT tokens |
+| PORT | Backend server port |
+| USE_FAKE_AI | Set `true` to use fake AI responses for testing |
 
-# Frontend
+---
+
+# 2. Install Dependencies
+
+Install dependencies for **both client and server**.
+
+## Install Client
+
+```bash
 cd client
-yarn install
-# or npm install
+yarn
+```
 
-# Backend
-cd ../server
-yarn install
-# or npm install
+## Install Server
 
-3. Run the Project
+```bash
+cd server
+yarn
+```
 
-# Terminal 1 – Backend
+---
+
+# 3. Run the Project
+
+You must run **both backend and frontend**.
+
+## Start Backend
+
+```bash
 cd server
 yarn dev
-# or npm run dev
+```
 
-# Terminal 2 – Frontend
+## Start Frontend
+
+```bash
 cd client
 yarn dev
-# or npm run dev
+```
 
-4. Default URLs
+---
 
-Frontend:     http://localhost:5173
-Backend API:  http://localhost:5000/api
+# 4. Access the Application
 
-5. Main Features
+Frontend:
 
-- Chat with Google Gemini
-- Save & view conversation history
-- Upload images / PDFs (Still in development)
-- Guest mode (no login needed)
-- Register / Login with JWT
-- Delete conversations
+```
+http://localhost:5173
+```
 
+Backend API:
+
+```
+http://localhost:5000/api
+```
+
+---
+
+# 5. Features
+
+- AI Chat with Gemini
+- Conversation history
+- Guest chat (no login required)
+- User authentication (JWT)
+- Conversation management (delete)
+- Upload images / PDFs *(Still developing)*
+
+---
+
+# Notes
+
+- Guest users can chat but **conversations are not saved**.
+- When `USE_FAKE_AI=true`, the backend will return **mock responses instead of calling Gemini**.
