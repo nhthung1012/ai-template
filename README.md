@@ -67,3 +67,4 @@ Backend API:  http://localhost:5000/api
 - Guest mode (no login needed)
 - Register / Login with JWT
 - Delete conversations
+
