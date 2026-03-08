@@ -1,7 +1,7 @@
 export interface Message {
   role: "USER" | "ASSISTANT"
   content: string
-  file?: UploadedFile | File
+  file?: UploadedFile | null
 }
 
 export interface Conversation {
@@ -18,16 +18,14 @@ export interface ChatState {
 
   conversationId: string | null
 
-  uploadedFiles: File[]
+  uploadedFile: File | null
 
   loading: boolean
 }
 
 export interface UploadedFile {
-  _id: string
-  fileName: string
-  originalName: string
-  path: string
-  mimeType: string
-  size: number
+  name: string
+  type: string
+  preview?: string
+  url?: string
 }

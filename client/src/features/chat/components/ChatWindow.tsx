@@ -17,8 +17,8 @@ export default function ChatWindow() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-  const handleSend = (text: string) => {
-    dispatch(sendMessage(text))
+  const handleSend = (text: string, file?: File) => {
+    dispatch(sendMessage(text, file))
   }
 
   return (

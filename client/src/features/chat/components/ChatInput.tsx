@@ -4,7 +4,7 @@ import { addUploadedFile, removeUploadedFile } from "../chatSlice"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 
 type Props = {
-  onSend: (message: string, files: File[]) => void
+  onSend: (message: string, file?: File) => void
 }
 
 export default function ChatInput({ onSend }: Props) {
@@ -14,17 +14,15 @@ export default function ChatInput({ onSend }: Props) {
 
   const dispatch = useAppDispatch()
 
-  const uploadedFiles = useAppSelector(
-    (state) => state.chat.uploadedFiles
+  const uploadedFile = useAppSelector(
+    (state) => state.chat.uploadedFile
   )
 
   const handleSend = () => {
 
-    if (!text.trim() && uploadedFiles.length === 0) return
+    if (!text.trim() && !uploadedFile) return
 
-    const filesToSend = [...uploadedFiles]
-
-    onSend(text, filesToSend)
+    onSend(text, uploadedFile ?? undefined)
 
     setText("")
   }
@@ -58,33 +56,25 @@ export default function ChatInput({ onSend }: Props) {
 
       {/* FILE PREVIEW */}
 
-      {uploadedFiles.length > 0 && (
+      {uploadedFile && (
 
         <div className="flex flex-wrap gap-2 mb-3">
-
-          {uploadedFiles.map((file, index) => (
-
-            <div
-              key={index}
-              className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg"
-            >
+            <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
+            
               <File size={16} />
 
               <span className="text-sm truncate max-w-[150px]">
-                {file.name}
+                {uploadedFile.name}
               </span>
 
               <button
-                onClick={() => dispatch(removeUploadedFile(index))}
+                onClick={() => dispatch(removeUploadedFile())}
                 className="text-gray-500 hover:text-black"
               >
                 <X size={14} />
               </button>
 
             </div>
-
-          ))}
-
         </div>
 
       )}
