@@ -12,16 +12,16 @@ const {
 exports.sendMessage = async (req, res) => {
   try {
     let { conversationId, content } = req.body
-    const files = req.files || []
+    const file = req.file || null
 
-    if (!content && files.length === 0) {
+    if (!content && !file) {
       return res.status(400).json({ message: "Content or file is required" })
     }
 
     const isGuest = !req.user
     let isNewConversation = false
     let history = []
-    let savedFiles = []
+    let savedFile = null
 
     /*
     CREATE CONVERSATION
@@ -43,21 +43,16 @@ exports.sendMessage = async (req, res) => {
     SAVE FILES (only logged user)
     */
 
-    if (!isGuest && files.length > 0) {
-      for (const file of files) {
-
-        const saved = await File.create({
-          user: req.user.userId,
-          conversation: conversationId,
-          fileName: file.filename,
-          originalName: file.originalname,
-          path: `uploads/${file.filename}`,
-          mimeType: file.mimetype,
-          size: file.size
-        })
-
-        savedFiles.push(saved.path)
-      }
+    if (!isGuest && file) {
+      savedFile = await File.create({
+        user: req.user.userId,
+        conversation: conversationId,
+        fileName: file.filename,
+        originalName: file.originalname,
+        path: `uploads/${file.filename}`,
+        mimeType: file.mimetype,
+        size: file.size
+      })
     }
 
     /*
@@ -69,7 +64,7 @@ exports.sendMessage = async (req, res) => {
         conversation: conversationId,
         role: "USER",
         content: content || "",
-        files: savedFiles
+        file: savedFile || null
       })
 
       history = await Message.find({
@@ -99,7 +94,7 @@ exports.sendMessage = async (req, res) => {
     if (process.env.USE_FAKE_AI === "true") {
       aiReply = await generateFakeResponse(formatted)
     } else {
-      aiReply = await generateAIResponse(formatted, files)
+      aiReply = await generateAIResponse(formatted, file)
     }
 
     /*
