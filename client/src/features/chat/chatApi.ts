@@ -5,7 +5,7 @@ export const chatApi = {
   sendMessage: async (
     content: string,
     conversationId?: string,
-    files?: File[]
+    file?: File
   ) => {
 
     const formData = new FormData()
@@ -16,20 +16,13 @@ export const chatApi = {
       formData.append("conversationId", conversationId)
     }
 
-    files?.forEach((file) => {
-      formData.append("files", file)
-    })
+    if (file) {
+      formData.append("file", file)
+    }
 
     const res = await api.post("/chat/message", formData)
 
     return res.data
-    // return {
-    //   conversationId: conversationId || "mock-conversation-id",
-
-    //   reply: files && files.length > 0
-    //     ? `I received **${files.length} file(s)**.\n\nFile name:\n${files.map(f => `- ${f.name}`).join("\n")}`
-    //     : `AI response to: **${content}**`
-    // }
   },
 
   getConversations: async () => {

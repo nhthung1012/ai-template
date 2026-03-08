@@ -11,18 +11,23 @@ import {
 } from "./chatSlice"
 
 export const sendMessage =
-  (message: string, files: File[] = []) =>
+  (message: string, file?: File) =>
   async (dispatch: any, getState: any) => {
 
     const { conversationId } = getState().chat
-
-    const file = files[0]
+    const previewUrl = file ? URL.createObjectURL(file) : undefined
 
     // USER MESSAGE
     dispatch(addMessage({
       role: "USER",
       content: message,
-      file
+      file: file
+        ? {
+            name: file.name,
+            type: file.type,
+            preview: previewUrl
+          }
+        : null
     }))
 
     dispatch(clearUploadedFiles())
@@ -33,7 +38,7 @@ export const sendMessage =
       const res = await chatApi.sendMessage(
         message,
         conversationId ?? undefined,
-        file ? [file] : []
+        file
       )
 
       const { reply, conversationId: newConversationId } = res

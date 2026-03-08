@@ -16,22 +16,13 @@ export default function MessageBubble({ message }: Props) {
 
     if (!file) return null
 
-    const isLocal = file instanceof File
-
-    const fileName = isLocal ? file.name : file.originalName
-    const mimeType = isLocal ? file.type : file.mimeType
-
-    const src = isLocal
-      ? URL.createObjectURL(file)
-      : `http://localhost:5000${file.path}`
-
-    const isImage = mimeType?.startsWith("image/")
+    const isImage = file.type?.startsWith("image/")
 
     if (isImage) {
       return (
         <img
-          src={src}
-          alt={fileName}
+          src={file.preview}
+          alt={file.name}
           className="max-w-[220px] rounded-lg border mb-2"
         />
       )
@@ -46,7 +37,7 @@ export default function MessageBubble({ message }: Props) {
         `}
       >
         <FileIcon size={14} />
-        <span className="truncate">{fileName}</span>
+        <span className="truncate">{file.name}</span>
       </div>
     )
   }

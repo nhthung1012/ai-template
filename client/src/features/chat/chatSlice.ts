@@ -5,7 +5,7 @@ const initialState: ChatState = {
   messages: [],
   conversations: [],
   conversationId: null,
-  uploadedFiles: [] as File[],
+  uploadedFile: null,
   loading: false
 }
 
@@ -62,15 +62,15 @@ const chatSlice = createSlice({
     },
 
     addUploadedFile(state, action: PayloadAction<File>) {
-      state.uploadedFiles.push(action.payload)
+      state.uploadedFile = action.payload
     },
 
-    removeUploadedFile(state, action: PayloadAction<number>) {
-      state.uploadedFiles.splice(action.payload, 1)
+    removeUploadedFile(state) {
+      state.uploadedFile = null
     },
 
     clearUploadedFiles(state) {
-      state.uploadedFiles = []
+      state.uploadedFile = null
     },
 
     resetChat() {
