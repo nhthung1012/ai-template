@@ -126,7 +126,7 @@ http://localhost:5000/api
 - Guest chat (no login required)
 - User authentication (JWT)
 - Conversation management (delete)
-- Upload images / PDFs *(Still developing)*
+- Upload images / PDFs *(currently supports single file upload only)*
 
 ---
 
@@ -134,3 +134,4 @@ http://localhost:5000/api
 
 - Guest users can chat but **conversations are not saved**.
 - When `USE_FAKE_AI=true`, the backend will return **mock responses instead of calling Gemini**.
+
