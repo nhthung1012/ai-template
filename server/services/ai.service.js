@@ -4,7 +4,7 @@ const genAI = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
 })
 
-exports.generateAIResponse = async (messages, files = []) => {
+exports.generateAIResponse = async (messages, file = null) => {
   try {
 
     const contents = messages.map(msg => ({
@@ -13,34 +13,36 @@ exports.generateAIResponse = async (messages, files = []) => {
     }))
 
     /*
-    ADD FILES
+    ADD FILE
     */
 
-    if (files.length > 0) {
+    if (file) {
 
-      const fileParts = files.map(file => {
-        const buffer = fs.readFileSync(file.path)
-
-        return {
-          inlineData: {
-            data: buffer.toString("base64"),
-            mimeType: file.mimetype
-          }
-        }
+      const uploadedFile = await genAI.files.upload({
+        file: file.path,
+        config: { mimeType: file.mimetype }
       })
+
+      console.log("Uploaded file:", uploadedFile)
 
       contents.push({
         role: "user",
-        parts: fileParts
+        parts: [
+          createPartFromUri(uploadedFile.uri, uploadedFile.mimeType)
+        ]
       })
     }
 
-    const response = await genAI.models.generateContent({
+    /*
+    GENERATE RESPONSE
+    */
+
+    const result = await genAI.models.generateContent({
       model: "gemini-3-flash-preview",
       contents
     })
 
-    return response.text
+    return result.text
 
   } catch (error) {
     console.error("Gemini Error:", error)
@@ -62,7 +64,7 @@ Rules:
 `
 
   const response = await genAI.models.generateContent({
-    model: "gemini-flash-latest",
+    model: "gemini-3-flash-preview",
     contents: [
       {
         role: "user",
