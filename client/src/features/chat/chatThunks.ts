@@ -38,7 +38,7 @@ export const sendMessage =
       const res = await chatApi.sendMessage(
         message,
         conversationId ?? undefined,
-        file
+        file ?? undefined
       )
 
       const { reply, conversationId: newConversationId } = res

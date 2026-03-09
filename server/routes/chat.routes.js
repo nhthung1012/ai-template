@@ -12,7 +12,7 @@ const {
 
 const router = express.Router()
 
-router.post("/message", authOptional, upload.array("files", 5), sendMessage)
+router.post("/message", authOptional, upload.single("file"), sendMessage)
 router.get("/conversations", authMiddleware, getUserConversations)
 router.get("/conversation/:id", authMiddleware, getConversationDetail)
 router.put("/conversation/:id", authMiddleware, renameConversation)
