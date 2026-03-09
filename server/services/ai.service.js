@@ -15,7 +15,6 @@ exports.generateAIResponse = async (messages, file = null) => {
     /*
     ADD FILE
     */
-
     if (file) {
 
       const uploadedFile = await genAI.files.upload({
