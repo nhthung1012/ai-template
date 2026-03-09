@@ -20,7 +20,9 @@ export const chatApi = {
       formData.append("file", file)
     }
 
-    const res = await api.post("/chat/message", formData)
+    const res = await api.post("/chat/message", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    })
 
     return res.data
   },
