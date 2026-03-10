@@ -1,4 +1,4 @@
-const { GoogleGenAI } = require("@google/genai")
+const { GoogleGenAI, createPartFromUri } = require("@google/genai")
 
 const genAI = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
@@ -128,4 +128,5 @@ If you are building a modern web application where the data changes frequently (
 exports.generateFakeTitle = async (firstMessage) => {
   const words = firstMessage.split(" ").slice(0, 5)
   return words.join(" ")
+
 }
